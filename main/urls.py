@@ -5,8 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myShop.urls')),   # твой старый путь к myShop
-    path('books/', include('book.urls')),  # путь к новой домашке book
+    path('', include('myShop.urls')),   
+    path('books/', include('book.urls')), 
+    path('', include('resume.urls')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 urlpatterns += static(

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'book',
     'relation_db',
     'myShop',
+    'resume',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +59,8 @@ ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
+
+        'DIRS': [BASE_DIR / 'templates'],
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
