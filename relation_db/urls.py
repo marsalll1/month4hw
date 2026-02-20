@@ -1,7 +1,6 @@
 from django.urls import path
-from . import views
-
+from .views import RelationDBView
 
 urlpatterns = [
-    path('people/', views.relation_db)
+    path('people/', RelationDBView.as_view(), name='relation_db'),
 ]

@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.views.generic import TemplateView
 
-def index(request):
-    return HttpResponse('Счастье можно найти даже в тёмные времена, если не забывать обращаться к свету')
+class IndexView(TemplateView):
+    template_name = 'index.html'

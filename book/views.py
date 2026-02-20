@@ -1,24 +1,20 @@
-from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator
+from django.views.generic import ListView, DetailView
 from .models import Book
 
+class BookListView(ListView):
+    model = Book
+    template_name = 'book/book_list.html'
+    context_object_name = 'page_obj'
+    paginate_by = 5
 
-def book_list(request):
-    query = request.GET.get('q')
-    books = Book.objects.all()
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        qs = Book.objects.all()
+        if query:
+            qs = qs.filter(title__icontains=query)
+        return qs
 
-    if query:
-        books = books.filter(title__icontains=query)
-
-    paginator = Paginator(books, 5)  # 5 книг на страницу
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'book/book_list.html', {
-        'page_obj': page_obj
-    })
-
-
-def book_detail(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    return render(request, 'book/book_detail.html', {'book': book})
+class BookDetailView(DetailView):
+    model = Book
+    template_name = 'book/book_detail.html'
+    context_object_name = 'book'

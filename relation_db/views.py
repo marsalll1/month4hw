@@ -1,13 +1,7 @@
-from django.shortcuts import render
-from . import models
+from django.views.generic import ListView
+from .models import Register
 
-def relation_db(request):
-    if request.method == 'GET':
-        persons_tour = models.Register.objects.all()
-    return render(
-        request,
-        'relation_db.html',
-        {
-            'tours': persons_tour
-        }
-    )
+class RelationDBView(ListView):
+    model = Register
+    template_name = 'relation_db.html'
+    context_object_name = 'tours'

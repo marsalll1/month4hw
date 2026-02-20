@@ -1,16 +1,33 @@
-from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView
+from django.shortcuts import get_object_or_404
 from .models import Category, Product
 
-def categories_list(request):
-    categories = Category.objects.all()
-    return render(request, 'categories.html', {'categories': categories})
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'categories.html'
+    context_object_name = 'categories'
 
-def products_list(request):
-    products = Product.objects.all()
-    categories = Category.objects.all()  # добавляем категории для фильтров
-    return render(request, 'products.html', {'products': products, 'categories': categories})
+class ProductListView(ListView):
+    model = Product
+    template_name = 'products.html'
+    context_object_name = 'products'
 
-def category_products(request, category_id):
-    category = get_object_or_404(Category, id=category_id)
-    products = Product.objects.filter(category=category)
-    return render(request, 'category_products.html', {'category': category, 'products': products})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+class CategoryProductsView(ListView):
+    model = Product
+    template_name = 'category_products.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        category = get_object_or_404(Category, id=category_id)
+        return Product.objects.filter(category=category)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = get_object_or_404(Category, id=self.kwargs['category_id'])
+        return context
